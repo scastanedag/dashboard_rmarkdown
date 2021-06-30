@@ -1,5 +1,3 @@
-# dashboard_rmarkdown
-
 ---
 title: "Tablero Seguimiento Países"
 output: 
@@ -18,9 +16,11 @@ library(tidyverse)
 
 ```{r}
 data<-import("https://covid.ourworldindata.org/data/owid-covid-data.csv", format ="csv")
+
 data$date<-as.Date(data$date)
 data$week<-as.numeric(strftime(data$date, format = "%U")) 
 data$year<-strftime(data$date, format = "%y")
+
 tasa.muertes<-function(A){
 ggplot(filter(data,location==A)%>%
          group_by(week,year) %>%
@@ -31,6 +31,7 @@ ggplot(filter(data,location==A)%>%
   labs(title=A, y="tasa", x="semana")+
   facet_wrap(~year)
 }
+
 ```
 
 Tablero de Control  con el número de muertes por Covid-19 por millón de habitantes por semana
@@ -43,6 +44,7 @@ Column {data-width=200}
 Selecciona localización 
 
 ```{r}
+
 selectInput("lugar", "localización", unique(data$locat))
 ```
 
@@ -53,4 +55,6 @@ Column {data-width=800}
 
 ```{r}
 renderPlot({tasa.muertes(input$lugar)})
+
 ```
+
